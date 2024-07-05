@@ -1,25 +1,21 @@
 class Solution {
 public:
     int maxProfit(vector<int>& prices) {
-        // BRUTE FORCE , checking each one
+        // OPTIMAL 
 
-        int profit=0;
         int n = prices.size();
+        int mini = prices[0];
+        int profit=0;
 
-        for(int i=0; i<n; i++){
-            int num = prices[i];
-            int maxNum = num;
-            for(int j=i+1; j<n; j++){
-                maxNum = max(maxNum,prices[j]);
-            }
-
-            int diff = (maxNum-num);
-            profit = max(profit,diff);
+        for(int i=1; i<n; i++){
+            int cost = prices[i] - mini;
+            profit = max(profit,cost);
+            mini = min(mini,prices[i]);
         }
 
         return profit;
     }
 };
 
-// TC : O(n*n)
+// TC : O(N)
 // SC : O(1)
