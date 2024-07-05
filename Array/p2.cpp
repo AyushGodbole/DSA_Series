@@ -1,33 +1,33 @@
 class Solution {
 public:
 
-    int ncr(int n , int r){
-        long long res = 1;
-        for(int i=0; i<r; i++){
-            res = res*(n-i);
-            res = res/(i+1);
+    // OPTIMAL
+
+    vector<int> generateRow(int row){
+        vector<int> ans;
+        int res = 1;
+        ans.push_back(1);
+
+        for(int col=1; col<row; col++){
+            res = res * (row-col);
+            res = res/(col);
+            ans.push_back(res);
         }
 
-        return res;
+        return ans;
     }
 
     vector<vector<int>> generate(int numRows) {
-        // BRUTE FORCE
 
         vector<vector<int>> res;
 
-        for(int row=1; row<=numRows; row++){
-            vector<int> temp;
-            for(int col=1; col<=row; col++){
-                int num = ncr(row-1,col-1);
-                temp.push_back(num);
-            }
-            res.push_back(temp);
+        for(int i=1; i<=numRows; i++){
+            res.push_back(generateRow(i));
         }
 
         return res;
     }
 };
 
-// TC : O(n*n*n)
+// TC : O(n*n)
 // SC : O(1)
