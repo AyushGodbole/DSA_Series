@@ -1,18 +1,19 @@
 class Solution {
 public:
     int maxSubArray(vector<int>& nums) {
-        // BRUTE FORCE
+        // OPTIMAL - Kadanes Algo
 
-        // Generate all sub arrays
+        // discard -ve sum 
 
         int maxSum = INT_MIN;
         int n = nums.size();
+        int sum = 0;
 
         for(int i=0; i<n; i++){
-            int sum=0;
-            for(int j=i; j<n; j++){
-                sum+=nums[j];
-                maxSum = max(maxSum,sum);
+            sum+=nums[i];
+            maxSum = max(maxSum,sum);
+            if(sum<0){
+                sum=0;
             }
         }
 
@@ -20,5 +21,5 @@ public:
     }
 };
 
-// TC : O(n*n)
+// TC : O(n)
 // SC : O(1)
