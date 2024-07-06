@@ -1,37 +1,28 @@
 class Solution {
 public:
     vector<vector<int>> merge(vector<vector<int>>& intervals) {
-        // BRUTE FORCE
+        // OPTIMAL
         vector<vector<int>> ans;
 
         // 1. sort the array
         sort(intervals.begin(),intervals.end());
         int n = intervals.size();
 
-        // 2. check for each
         for(int i=0; i<n; i++){
-            int start = intervals[i][0];
-            int end = intervals[i][1];
 
-            if(!ans.empty() && end<=ans.back()[1]){
-                continue;
+            // check if new interval
+            if(ans.empty() || intervals[i][0]>ans.back()[1]){
+                ans.push_back(intervals[i]);
             }
-
-            for(int j=i+1; j<n; j++){
-                if(intervals[j][0]<=end){
-                    end = max(end,intervals[j][1]);
-                }
-                else{
-                    break;
-                }
+            else{
+                ans.back()[1] = max(ans.back()[1],intervals[i][1]);
             }
-
-            ans.push_back({start,end});
+            
         }
 
         return ans;
     }
 };
 
-// TC : O(nlogn) + O(2n)
+// TC : O(nlogn) + O(n)
 // SC : O(1)
