@@ -1,22 +1,26 @@
 class Solution {
 public:
     int findDuplicate(vector<int>& nums) {
-        // BRUTE FORCE
+        // OPTIMAL - using slow, fast logic of Linked List
 
-        // count frequency
-        unordered_map<int,int> mp;
-        for(auto ele : nums){
-            mp[ele]++;
+        int slow = nums[0];
+        int fast = nums[0];
+
+        do{
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+        }
+        while(slow!=fast);
+
+        fast = nums[0];
+        while(slow!=fast){
+            slow = nums[slow];
+            fast = nums[fast];
         }
 
-        // check frequency greater than 1
-        for(auto it : mp){
-            if(it.second>1) return it.first;
-        }
-
-        return -1;
+        return fast;
     }
 };
 
-// TC : O(n) + O(n)
-// SC : O(n)
+// TC : O(N) + O(N)
+// SC : O(1)
