@@ -1,27 +1,22 @@
-// ROTATE MATRIX BY 90
-
 class Solution {
 public:
     void rotate(vector<vector<int>>& matrix) {
-        // BRUTE FORCE
-        
+        // OPTIMAL
         int n = matrix.size();
-        vector<vector<int>> res(n,vector<int>(n));
-        int k=0;
-        for(int i=n-1; i>=0; i--){
-            for(int j=0; j<=n-1; j++){
-                res[j][i] = matrix[k][j];
+
+        // 1. take transpose of matrix
+        for(int i=0; i<=n-1; i++){
+            for(int j=i+1; j<=n-1; j++){
+                swap(matrix[i][j],matrix[j][i]);
             }
-            k++;
         }
 
-        for(int i=0; i<n; i++){
-            for(int j=0; j<n; j++){
-                matrix[i][j] = res[i][j];
-            }
+        // 2. reverse every row
+        for(int i=0; i<=n-1; i++){
+            reverse(matrix[i].begin(),matrix[i].end());
         }
     }
 };
 
-// TC : O(n^2) + O(n^2)
-// SC : O(NxN)
+// TC : O(n^2)
+// SC : O(1)
