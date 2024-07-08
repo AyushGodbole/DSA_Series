@@ -36,5 +36,5 @@ class Solution {
     }
 };
 
-// TC : O(N+2E)
+// TC : O(N+E)
 // SC : O(N) + O(N) + O(N)
