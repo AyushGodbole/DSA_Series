@@ -9,15 +9,25 @@
 class Solution {
 public:
     ListNode *detectCycle(ListNode *head) {
-        // BRUTE FORCE - using map
-        unordered_map<ListNode*,bool> visited;
-        ListNode* temp = head;
+        // OPTIMAL - using slow,fast concept
+        if(head==NULL || head->next==NULL) return NULL;
+        
+        // 1. slow moves by 1, fast moves by 2 and first collision occurs
+        ListNode* slow = head;
+        ListNode* fast = head;
+        ListNode* entry = head;
 
-        while(temp!=NULL){
-            if(visited[temp]) return temp;
-            else{
-                visited[temp] = true;
-                temp = temp->next;
+        while(fast->next!=NULL && fast->next->next!=NULL){
+            slow = slow->next;
+            fast = fast->next->next;
+            if(slow==fast){
+                //1st collision occured
+                while(slow!=entry){
+                    slow = slow->next;
+                    entry = entry->next;
+                }
+
+                return entry;
             }
         }
 
@@ -26,4 +36,4 @@ public:
 };
 
 // TC : O(N)
-// SC : O(N)
+// SC : O(1)
