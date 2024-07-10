@@ -11,28 +11,19 @@
 class Solution {
 public:
     ListNode* middleNode(ListNode* head) {
-        // BRUTE FORCE
+        // OPTIMAL - using slow,fast
 
-        // 1. count length of LL
-        int n=0;
-        ListNode* temp = head;
-        while(temp!=NULL){
-            n++;
-            temp=temp->next;
+        ListNode* slow = head;
+        ListNode* fast = head;
+
+        while(fast!=NULL && fast->next!=NULL){
+            slow = slow->next;
+            fast = fast->next->next;
         }
 
-        // 2. calculate n/2+1
-        int count = n/2 + 1;
-        temp = head;
-
-        while(count>1){
-            temp=temp->next;
-            count--;
-        }
-
-        return temp;
+        return slow;
     }
 };
 
-// TC : O(N) + O(N/2)
+// TC : O(N/2)
 // SC : O(1)
