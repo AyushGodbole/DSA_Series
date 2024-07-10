@@ -9,49 +9,39 @@
  * };
  */
 class Solution {
-private:
-    int getLength(ListNode* head) {
-        ListNode* temp = head;
-        int len = 0;
-        while (temp != nullptr) {
-            len++;
-            temp = temp->next;
-        }
-        return len;
-    }
 public:
     ListNode* removeNthFromEnd(ListNode* head, int n) {
-        // Calculate length
-        int len = getLength(head);
-        int node_to_delete = len - n + 1;
+        // Optimal - using slow, fast
 
-        // Edge case: if the head is the node to delete
-        if (node_to_delete == 1) {
+        ListNode* fast = head;
+        ListNode* slow = head;
+
+        // 1. move fast by 1 for n iterations
+        for (int i = 1; i <= n; i++) {
+            fast = fast->next;
+        }
+
+        // Edge case: if fast is nullptr, it means we need to remove the head node
+        if (fast == NULL) {
             ListNode* newHead = head->next;
             delete head; // Free the memory
             return newHead;
         }
 
-        ListNode* temp = head;
-        ListNode* prev = nullptr;
-        int pos = 1;
-
-        while (temp != nullptr) {
-            if (pos == node_to_delete) {
-                ListNode* next_node = temp->next;
-                prev->next = next_node;
-                delete temp; // Free the memory
-                break;
-            }
-
-            pos++;
-            prev = temp;
-            temp = temp->next;
+        // 2. move slow, fast by 1 until fast->next is nullptr
+        while (fast->next != nullptr) {
+            slow = slow->next;
+            fast = fast->next;
         }
+
+        // Remove the nth node from end
+        ListNode* nodeToDelete = slow->next;
+        slow->next = slow->next->next;
+        delete nodeToDelete; // Free the memory
 
         return head;
     }
 };
 
-// TC : O(N) + O(Len-N+1)
-// SC : O(1)
+// TC: O(N)
+// SC: O(1)
