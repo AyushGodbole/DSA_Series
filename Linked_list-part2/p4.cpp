@@ -9,31 +9,55 @@
  * };
  */
 class Solution {
-public:
-    bool isPalindrome(ListNode* head) {
-        // BRUTE FORCE - storing in array and then checking
-        vector<int> nums;
+private:
+    void reverseList(ListNode* &head) {
         ListNode* temp = head;
+        ListNode* curr = head;
+        ListNode* prev = NULL;
+
         while(temp!=NULL){
-            nums.push_back(temp->val);
-            temp = temp->next;
+            curr = curr->next;
+            temp->next = prev;
+            prev = temp;
+            temp = curr;
         }
 
-        int start = 0;
-        int end = nums.size()-1;
-        while(start<end){
-            if(nums[start]!=nums[end]){
+        head = prev;
+    }
+public:
+    bool isPalindrome(ListNode* head) {
+        // OPTIMAL
+        if(head->next==NULL) return true;
+
+        // 1. find middle of linked list
+        ListNode* slow = head;
+        ListNode* fast = head;
+
+        while(fast->next!=NULL && fast->next->next!=NULL){
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+
+        ListNode* middle = slow;
+
+        // 2. reverse next of middle node
+        ListNode* temp1 = head;
+        ListNode* temp2 = middle->next;
+        reverseList(temp2);
+
+        // 3. check now
+        while(temp2!=NULL){
+            if(temp1->val != temp2->val){
                 return false;
             }
-            else{
-                start++;
-                end--;
-            }
+
+            temp1 = temp1->next;
+            temp2 = temp2->next;
         }
 
         return true;
     }
 };
 
-// TC : O(N)
-// SC : O(N)
+// TC : O(N) + O(N/2)
+// SC : O(1)
