@@ -9,18 +9,17 @@
 class Solution {
 public:
     bool hasCycle(ListNode *head) {
-        // BRUTE FORCE - using map (hashing)
+        // OPTIMAL - using slow,fast concept
+        if(head==NULL || head->next==NULL) return false;
 
-        unordered_map<ListNode*,bool> visited;
-        ListNode* temp = head;
+        ListNode* slow = head;
+        ListNode* fast = head;
 
-        while(temp!=NULL){
-            // check if visited
-            if(visited[temp]) return true;
-            else{
-                visited[temp] = true;
-                temp = temp->next;
-            }
+        // slow moves by 1 , fast moves by 2
+        while(fast!=NULL && fast->next!=NULL){
+            slow = slow->next;
+            fast = fast->next->next;
+            if(slow==fast) return true;
         }
 
         return false;
@@ -28,4 +27,4 @@ public:
 };
 
 // TC : O(N)
-// SC : O(N)
+// SC : O(1)
