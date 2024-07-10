@@ -11,69 +11,44 @@
 class Solution {
 public:
     ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        // OPTIMAL - in-place
 
-        // BRUTE FORCE
-
-        // base cases
         if(list1==NULL) return list2;
         if(list2==NULL) return list1;
 
-        ListNode* temp1 = list1;
-        ListNode* temp2 = list2;
+        // 1. l1 always points to smaller value
+        ListNode* l1 = NULL;
+        ListNode* l2 = NULL;
+        if(list1->val <= list2->val){
+            l1 = list1;
+            l2 = list2;
+        }
+        else{
+            l1 = list2;
+            l2 = list1;
+        }
 
-        ListNode* newHead = NULL;
-        ListNode* newTail = NULL;
+        cout<<l1->val<<" "<<l2->val;
 
-        while(temp1!=NULL && temp2!=NULL){
-            if(temp1->val<=temp2->val){
-                // create node
-                ListNode* newNode = new ListNode(temp1->val);
+        ListNode* res = l1;
 
-                if(newHead==NULL && newTail==NULL){
-                    newHead = newNode;
-                    newTail = newNode;
-                }
-                else{
-                    newTail->next = newNode;
-                    newTail = newNode;
-                }
-                temp1 = temp1->next;
+        while(l1!=NULL && l2!=NULL){
+
+            // 2. until l1->val <= l2->val , move l1
+            ListNode* temp = NULL;
+            while(l1!=NULL && l1->val <= l2->val){
+                temp = l1;
+                l1 = l1->next;
             }
-            else{
-                // create node
-                ListNode* newNode = new ListNode(temp2->val);
 
-                if(newHead==NULL && newTail==NULL){
-                    newHead = newNode;
-                    newTail = newNode;
-                }
-                else{
-                    newTail->next = newNode;
-                    newTail = newNode;
-                }
-                temp2 = temp2->next;
-            }
+            // 3. update links
+            temp->next = l2;
+            swap(l1,l2);
         }
 
-        // temp1 left
-        while(temp1!=NULL){
-            ListNode* newNode = new ListNode(temp1->val);
-            newTail->next = newNode;
-            newTail = newNode;
-            temp1 = temp1->next;
-        }
-
-        // temp1 left
-        while(temp2!=NULL){
-            ListNode* newNode = new ListNode(temp2->val);
-            newTail->next = newNode;
-            newTail = newNode;
-            temp2 = temp2->next;
-        }
-
-        return newHead;
+        return res;
     }
 };
 
 // TC : O(N1+N2)
-// SC : O(N1+N2)
+// SC : O(1)
