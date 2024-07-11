@@ -11,44 +11,41 @@
 class Solution {
 private:
     int getLength(ListNode* head){
+        int len = 0;
         ListNode* temp = head;
-        int length = 0;
         while(temp!=NULL){
             temp = temp->next;
-            length++;
+            len++;
         }
-        return length;
-    }
+        return len;
+    }    
 public:
     ListNode* rotateRight(ListNode* head, int k) {
-        // BRUTE FORCE- rotating one by one
+        // OPTIMAL
+
         if(head==NULL || head->next==NULL) return head;
+        int n = getLength(head);
+        k = k%n;
 
-        int len = getLength(head);
-        k = k%len;
-
+        // 1. go to last node
         ListNode* temp = head;
-        ListNode* curr = head;
-        ListNode* prev = NULL;
+        while(temp->next!=NULL) temp = temp->next;
 
-        while(temp->next!=NULL && k){
-            temp = temp->next;
-            prev = curr;
-            curr = temp;
+        // 2. make last node , points to first node i.e make circular node
+        temp->next = head;
 
-            // check if last node , make it head node
-            if(temp->next==NULL){
-                prev->next = NULL;
-                temp->next = head;
-                head = temp;
-                prev = NULL;
-                k--;
-            }
-        }
+        // 3. got to (n-k)th node
+        temp = head;
+        int j = (n-k);
+        for(int i=1; i<j; i++) temp = temp->next;
+
+        // 4. update head
+        head = temp->next;
+        temp->next = NULL;
 
         return head;
     }
 };
 
-// TC : O(k*n)
+// TC : O(N) + O(N-k)
 // SC : O(1)
