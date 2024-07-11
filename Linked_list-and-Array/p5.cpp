@@ -1,24 +1,20 @@
 class Solution {
 public:
     int removeDuplicates(vector<int>& nums) {
-        // BRUTE FORCE
-
-        // storing elements into set , then replacing in main array
-        set<int> st;
-        for(auto ele : nums){
-            st.insert(ele);
-        }
+        // OPTIMAL
+        int n=nums.size();
 
         int i=0;
-        int len=0;
-        for(auto ele : st){
-            nums[i++] = ele;
-            len++;
+        for(int j=i+1; j<n; j++){
+            if(nums[j]!=nums[i]){
+                nums[i+1] = nums[j];
+                i++;
+            }
         }
 
-        return len;
+        return (i+1);
     }
 };
 
-// TC : O(N) + O(N)
-// SC : O(N)
+// TC : O(N)
+// SC : O(1)
