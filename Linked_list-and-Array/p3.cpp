@@ -25,4 +25,4 @@ public:
 };
 
 // TC : O(N^3)
-// SC : O(1)
+// SC : O(N)
