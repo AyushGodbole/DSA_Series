@@ -1,29 +1,34 @@
 class Solution {
 public:
     int majorityElement(vector<int>& nums) {
-        // BETTER
-        sort(nums.begin(),nums.end());
+        // OPTIMAL - moore's voting algo
 
+        int count=0;
+        int ele;
         int n=nums.size();
-
-        // edge case , when size is 1
-        if(n==1) return nums[0];
-
-        int count=1;
-        int majority = n/2;
-        for(int i=1; i<nums.size(); i++){
-            if(nums[i]==nums[i-1]){
+        for(int i=0; i<n; i++){
+            if(count==0){
+                ele = nums[i];
                 count++;
-                if(count > majority) return nums[i];
+            }
+            else if(nums[i]==ele){
+                count++;
             }
             else{
-                count=1;
+                count--;
             }
         }
 
+        int majority = n/2;
+        int eleCount=0;
+        for(int i=0; i<n; i++){
+            if(nums[i]==ele) eleCount++;
+        }
+
+        if(eleCount>majority) return ele;
         return -1;
     }
 };
 
-// TC : O(NlogN) + O(N)
+// TC : O(N) + O(N)
 // SC : O(1)
