@@ -1,29 +1,32 @@
 class Solution {
-private:
-    double solve(double x, int n){
-        double long ans=1;
-        for(int i=1; i<=n; i++){
-            ans = ans*x;
+public:
+    double myPow(double x, int n) {
+        // OPTIMAL
+
+        long long non_neg = n;
+        if(n<0){
+            non_neg = -1*non_neg;
         }
+
+        double ans=1;
+        while(non_neg>0){
+            // for odd n
+            if(non_neg%2==1){
+                ans = ans*x;
+                non_neg = non_neg-1;
+            }
+            // for even n
+            else{
+                x=x*x;
+                non_neg = non_neg/2;
+            }
+        }
+
+        if(n<0) return 1/ans;
 
         return ans;
     }
-public:
-    double myPow(double x, int n) {
-        // BRUTE FORCE
-
-        if(n==0) return 1;
-
-        if(n<0){
-            n = abs(n);
-            double res = solve(x,n);
-            res = 1/res;
-            return res;
-        }
-
-        return solve(x,n);
-    }
 };
 
-// TC : O(N)
+// TC : O(logn)
 // SC : O(1)
