@@ -1,22 +1,29 @@
 class Solution {
 public:
     int majorityElement(vector<int>& nums) {
-        // BRUTE FORCE
-
-        unordered_map<int,int> mp;
-        for(auto ele:nums){
-            mp[ele]++;
-        }
+        // BETTER
+        sort(nums.begin(),nums.end());
 
         int n=nums.size();
-        int majority=n/2;
-        for(auto it:mp){
-            if(it.second > majority) return it.first;
+
+        // edge case , when size is 1
+        if(n==1) return nums[0];
+
+        int count=1;
+        int majority = n/2;
+        for(int i=1; i<nums.size(); i++){
+            if(nums[i]==nums[i-1]){
+                count++;
+                if(count > majority) return nums[i];
+            }
+            else{
+                count=1;
+            }
         }
 
         return -1;
     }
 };
 
-// TC : O(N) + O(N)
-// SC : O(N)
+// TC : O(NlogN) + O(N)
+// SC : O(1)
