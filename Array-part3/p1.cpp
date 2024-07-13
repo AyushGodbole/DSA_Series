@@ -1,43 +1,29 @@
 class Solution {
-private:
-    bool binarySearch(vector<int> row, int target){
-        int left=0;
-        int right=row.size()-1;
-
-        while(left<=right){
-            int mid = left + (right-left)/2;
-            if(row[mid]<target){
-                left = mid+1;
-            }
-            else if(row[mid]>target){
-                right = mid-1;
-            }
-            else{
-                return true;
-            }
-        }
-
-        return false;
-    }
 public:
     bool searchMatrix(vector<vector<int>>& matrix, int target) {
-        // BETTER
+        // OPTIMAL - using hypothetical 1D Array and applying  Binary Search on it
 
-        // going to every row , and check if target lies in (arr[row][0],arr[row][n-1])
-        // if so, then do a bs on it
         int n=matrix.size();
         int m=matrix[0].size();
 
-        for(int row=0; row<n; row++){
-            if(target>=matrix[row][0] && target<=matrix[row][m-1]){
-                bool res = binarySearch(matrix[row],target);
-                return res;
-            }
+        int low=0;
+        int high=(n*m)-1;
+
+        while(low<=high){
+            int mid = low+(high-low)/2;
+
+            // calcuate mid in terms of 2D matrix
+            int row = mid/m;
+            int col = mid%m;
+
+            if(matrix[row][col]==target) return true;
+            else if(matrix[row][col]<target) low = mid+1;
+            else high = mid-1;
         }
 
         return false;
     }
 };
 
-// TC : O(N) + O(logm)
+// TC : O(log(m*n))
 // SC : O(1)
