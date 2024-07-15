@@ -1,28 +1,32 @@
 class Solution {
 public:
     vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
-        // BRUTE FORCE - checking each
+        // OPTIMAL - using stack
+
+        // hello world
+
+        unordered_map<int,int> mp;
+        stack<int> st;
+        int n=nums2.size();
+        for(int i=n-1; i>=0; i--){
+            int ele = nums2[i];
+            // find next grater element
+            while(!st.empty() && st.top()<=ele) st.pop();
+
+            // check if find next greater or not
+            int res = !st.empty() ? st.top() : -1;
+            st.push(ele);
+            mp[ele] = res;
+        }
 
         vector<int> ans;
-        for(int i=0; i<nums1.size(); i++){
-            int ele=nums1[i];
-            for(int j=0; j<nums2.size(); j++){
-                if(nums2[j]==ele){
-                    int maxi=-1;
-                    for(int k=j+1; k<nums2.size(); k++){
-                        if(nums2[k]>ele){
-                            maxi = max(maxi,nums2[k]);
-                            break;
-                        }
-                    }
-                    ans.push_back(maxi);
-                }
-            }
+        for(auto ele:nums1){
+            ans.push_back(mp[ele]);
         }
 
         return ans;
     }
 };
 
-// TC : O(n1 * (n2*n2))
-// SC : O(1)
+// TC : O(n2) + O(n1)
+// SC : O(n2) for stack , + O(n1) for map
