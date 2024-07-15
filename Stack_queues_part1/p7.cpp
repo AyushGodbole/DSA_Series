@@ -1,38 +1,32 @@
 class Solution {
 public:
     vector<int> nextGreaterElements(vector<int>& nums) {
-        // BRUTE FORCE
-        vector<int> ans;
+        // OPTIMAL
 
-        // 1. repeat the array
-        int n=nums.size();
-        vector<int> arr;
-        for(int i=0; i<n; i++){
-            arr.push_back(nums[i]);
-        }
-        for(int i=0; i<n; i++){
-            arr.push_back(nums[i]);
-        }
+        stack<int> st;
+        vector<int> ans(nums.size(), -1); // Initialize answer vector with -1
+        int n = nums.size();
+        
+        for (int i = 2 * n - 1; i >= 0; i--) {
+            int ele = nums[i % n];
+            // Get next greater element
+            while (!st.empty() && st.top() <= ele) {
+                st.pop();
+            }
 
-
-        // 2. find next greater
-        int n2 = arr.size();
-        for(int i=0; i<n; i++){
-            int ele=nums[i];
-            int maxi=INT_MIN;
-            for(int j=i+1; j<n2; j++){
-                if(arr[j]>ele){
-                    maxi = max(maxi,arr[j]);
-                    break;
+            // If i < n, we are in the first pass and need to fill the answer
+            if (i < n) {
+                if (!st.empty()) {
+                    ans[i] = st.top();
                 }
             }
-            if(maxi==INT_MIN) maxi=-1;
-            ans.push_back(maxi);
+            // Push current element to stack
+            st.push(ele);
         }
 
         return ans;
     }
 };
 
-// TC : O(n * (2n))
-// SC : O(2n)
+// TC : O(2n)
+// SC : O(n)
