@@ -1,48 +1,41 @@
 class MyStack {
 public:
-    // BRUTE - using 2 queues
-    queue<int> Q1;
-    queue<int> Q2;
+    // OPTIMAL - using single queue
+    queue<int> q;
 
     MyStack() {
         
     }
     
     void push(int x) {
-        // 1. push into Q2
-        Q2.push(x);
+        // 1. push into queue
+        q.push(x);
 
-        // 2. move all elements of Q1 to Q2
-        while(!Q1.empty()){
-            Q2.push(Q1.front());
-            Q1.pop();
-        }
-
-        // 3. move all elements of Q2 to Q1
-        while(!Q2.empty()){
-            Q1.push(Q2.front());
-            Q2.pop();
+        // 2. insert top (size-1) elements again in queue , and pop them from front;
+        for(int i=0; i<q.size()-1; i++){
+            q.push(q.front());
+            q.pop();
         }
     }
     
     int pop() {
-        int ele = Q1.front();
-        Q1.pop();
+        int ele = q.front();
+        q.pop();
         return ele;
     }
     
     int top() {
-        return Q1.front();
+        return q.front();
     }
     
     bool empty() {
-        if(Q1.empty()) return true;
+        if(q.empty()) return true;
         return false;
     }
 };
 
-// TC : O(N) + O(N) in push , O(1) in pop
-// SC : O(N) + O(N)
+// TC : O(N-1) in push , O(1) in pop
+// SC : O(N)
 
 /**
  * Your MyStack object will be instantiated and called as such:
