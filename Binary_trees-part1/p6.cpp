@@ -149,3 +149,6 @@ vector<int> leftView(Node *root)
    traverse(root,ans,level);
    return ans;
 }
+
+// TC : O(N)
+// SC : O(N)
