@@ -10,32 +10,24 @@
  * };
  */
 class Solution {
+private:
+    int traverse(TreeNode* root){
+        // base case
+        if(root==NULL) return 0;
+
+        int left = traverse(root->left);
+        int right = traverse(root->right);
+
+        return 1+max(left,right);
+    }
 public:
     int maxDepth(TreeNode* root) {
-        // APPROACH 1 - using level order traversal
+        // APPROACH 2 - using recursion
 
-        if(root==NULL) return 0;
-        int depth=0;
-        queue<TreeNode*> q;
-        q.push(root);
-
-        while(!q.empty()){
-            int size = q.size();
-            // traverse each nodes of a level
-            for(int i=0; i<size; i++){
-                TreeNode* frontnode = q.front();
-                q.pop();
-
-                // check childs
-                if(frontnode->left) q.push(frontnode->left);
-                if(frontnode->right) q.push(frontnode->right);
-            }
-            depth++;
-        }
-
+        int depth = traverse(root);
         return depth;
     }
 };
 
 // TC : O(N)
-// SC : O(N)
+// SC : O(Height of Tree)
