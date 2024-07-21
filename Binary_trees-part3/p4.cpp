@@ -11,34 +11,34 @@
  */
 class Solution {
 private:
-    void traverseLeft(TreeNode* root, vector<TreeNode*> &left){
-        if(root==NULL){
-            left.push_back(NULL);
+    void traverseLeft(TreeNode* root, vector<TreeNode*> &left) {
+        if (root == nullptr) {
+            left.push_back(nullptr);
             return;
         }
 
         left.push_back(root);
 
         // left
-        traverseLeft(root->left,left);
+        traverseLeft(root->left, left);
 
         // right
-        traverseLeft(root->right,left);
+        traverseLeft(root->right, left);
     }
 
-    void traverseRight(TreeNode* root, vector<TreeNode*> &right){
-        if(root==NULL){
-            right.push_back(NULL);
+    void traverseRight(TreeNode* root, vector<TreeNode*> &right) {
+        if (root == nullptr) {
+            right.push_back(nullptr);
             return;
         }
 
         right.push_back(root);
 
         // right
-        traverseRight(root->right,right);
+        traverseRight(root->right, right);
         
         // left
-        traverseRight(root->left,right);
+        traverseRight(root->left, right);
     }
 public:
     bool isSymmetric(TreeNode* root) {
@@ -46,26 +46,42 @@ public:
         vector<TreeNode*> left;
         vector<TreeNode*> right;
 
-        traverseLeft(root,left);
-        traverseRight(root,right);
+        traverseLeft(root->left, left);
+        traverseRight(root->right, right);
 
-        int i=0;
-        int j=0;
-        while(i<left.size() && j<right.size()){
-            // Both ae NULLS
-            if(left[i]==NULL && right[j]==NULL){
+        for (auto ele : left) {
+            if (ele != nullptr) {
+                cout << ele->val << " ";
+            } else {
+                cout << "null ";
+            }
+        }
+        cout << endl;
+
+        for (auto ele : right) {
+            if (ele != nullptr) {
+                cout << ele->val << " ";
+            } else {
+                cout << "null ";
+            }
+        }
+        cout << endl;
+
+        int i = 0;
+        int j = 0;
+        while (i < left.size() && j < right.size()) {
+            if (left[i] == nullptr && right[j] == nullptr) {
+                // Both are null, continue
                 i++;
                 j++;
-            }
-            // one is Null and other is not
-            else if(left[i]==NULL || right[j]==NULL){
+            } else if (left[i] == nullptr || right[j] == nullptr) {
+                // One is null and the other is not, not symmetric
                 return false;
-            }
-            // value does not matches
-            else if(left[i]->val != right[j]->val){
+            } else if (left[i]->val != right[j]->val) {
+                // Values are different
                 return false;
-            }
-            else{
+            } else {
+                // Values are the same, continue
                 i++;
                 j++;
             }
@@ -74,6 +90,3 @@ public:
         return true;
     }
 };
-
-// TC : O(N) + O(N)
-// SC : O(N) + O(N) + O(N)
