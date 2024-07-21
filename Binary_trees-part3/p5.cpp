@@ -10,25 +10,29 @@
  * };
  */
 class Solution {
-private:
-    void flattenTree(TreeNode* &node, TreeNode* &prev){
-        if(node==NULL) return;
-
-        // go right
-        flattenTree(node->right,prev);
-        // go left
-        flattenTree(node->left,prev);
-
-        node->right = prev;
-        node->left = NULL;
-        prev = node;
-    }
 public:
     void flatten(TreeNode* root) {
-        // APPROACH 1 - recursive
-        // 1. solve right part , then left part , then root
-        TreeNode* prev = NULL;
-        flattenTree(root,prev);
+        // approch 2 - using stack , iterative
+
+        if(root==NULL || (root->left==NULL && root->right==NULL)) return;
+
+        stack<TreeNode*> st;
+        st.push(root);
+
+        while(!st.empty()){
+            TreeNode* curr = st.top();
+            st.pop();
+
+            // check if right child exists
+            if(curr->right!=NULL) st.push(curr->right);
+            // check if left child exists
+            if(curr->left!=NULL) st.push(curr->left);
+
+            if(!st.empty()){
+                curr->right = st.top();
+            }
+            curr->left = NULL;
+        }
     }
 };
 
