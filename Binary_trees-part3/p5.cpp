@@ -12,29 +12,26 @@
 class Solution {
 public:
     void flatten(TreeNode* root) {
-        // approch 2 - using stack , iterative
+        // APPROACH 3 - optimal , updation of morris traversal
 
-        if(root==NULL || (root->left==NULL && root->right==NULL)) return;
+        TreeNode* curr = root;
+        while(curr!=NULL){
+            // find righmost leaf node in left sub tree
+            if(curr->left!=NULL){
+                TreeNode* prev = curr->left;
+                while(prev->right!=NULL){
+                    prev = prev->right;
+                }
 
-        stack<TreeNode*> st;
-        st.push(root);
-
-        while(!st.empty()){
-            TreeNode* curr = st.top();
-            st.pop();
-
-            // check if right child exists
-            if(curr->right!=NULL) st.push(curr->right);
-            // check if left child exists
-            if(curr->left!=NULL) st.push(curr->left);
-
-            if(!st.empty()){
-                curr->right = st.top();
+                // update links
+                prev->right = curr->right;
+                curr->right = curr->left;
+                curr->left = NULL;
             }
-            curr->left = NULL;
+            curr = curr->right;
         }
     }
 };
 
 // TC : O(N)
-// SC : O(N)
+// SC : O(1)
