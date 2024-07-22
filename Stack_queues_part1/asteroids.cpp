@@ -1,37 +1,30 @@
 class Solution {
 public:
     vector<int> asteroidCollision(vector<int>& asteroids) {
-        // APPROACH 1 - using stack
+        // APPROACH 2 - using list/vector
 
-        stack<int> st;
+        vector<int> ans;
         for(int i=0; i<asteroids.size(); i++){
-            if(asteroids[i]>0) st.push(asteroids[i]);
+            if(asteroids[i]>0) ans.push_back(asteroids[i]);
             else{
-                while(!st.empty() && st.top()>0 && abs(asteroids[i])>st.top()){
-                    st.pop();
+                while(!ans.empty() && ans.back()>0 && abs(asteroids[i])>ans.back()){
+                    ans.pop_back();
                 }
 
-                if(!st.empty() && abs(asteroids[i])==st.top()){
-                    st.pop();
+                if(!ans.empty() && abs(asteroids[i])==ans.back()){
+                    ans.pop_back();
                 }
                 else{
-                    if(st.empty() || st.top()<0){
-                        st.push(asteroids[i]);
+                    if(ans.empty() || ans.back()<0){
+                        ans.push_back(asteroids[i]);
                     }
                 }
             }
         }
 
-        vector<int> ans;
-        while(!st.empty()){
-            ans.push_back(st.top());
-            st.pop();
-        }
-        
-        reverse(ans.begin(),ans.end());
         return ans;
     }
 };
 
 // TC : O(N)
-// SC : O(N)
+// SC : O(1)
