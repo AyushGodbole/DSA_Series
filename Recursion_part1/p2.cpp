@@ -1,36 +1,36 @@
 class Solution {
 private:
-    void solve(int idx, int target, vector<int> &path, set<vector<int>> &st, vector<int> candidates){
+    void solve(int idx, int target, vector<int> &path, vector<vector<int>> &ans, vector<int> nums, int n){
         // base case
         if(target==0){
-            st.insert(path);
+            ans.push_back(path);
             return;
         }
 
-        // out of bound
-        if(idx>=candidates.size() || target<0) return;
-        
-        // include
-        path.push_back(candidates[idx]);
-        solve(idx+1,(target-candidates[idx]),path,st,candidates);
-        path.pop_back();
+        // traverse elements
+        for(int i=idx; i<n; i++){
+            if(i>idx && nums[i-1]==nums[i]) continue;
+            if(target<nums[i]) break;
 
-        // exclude
-        solve(idx+1,target,path,st,candidates);
+            path.push_back(nums[i]);
+            solve(i+1,(target-nums[i]),path,ans,nums,n);
+            path.pop_back();
+        }
     }
+
 public:
     vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
-        // BRUTE FORCE
-        set<vector<int>> st;
-        vector<int> path;
+        // OPTIMAL - same as previous , just avoid picking previous same element.
 
         sort(candidates.begin(),candidates.end());
-        solve(0,target,path,st,candidates);
+        vector<vector<int>> ans;
+        vector<int> path;
+        int n = candidates.size();
+        solve(0,target,path,ans,candidates,n);
 
-        vector<vector<int>> ans(st.begin(),st.end());
         return ans;
     }
 };
 
-// TC : O(2^k*t*logn)
-// SC : O(t*something) + O(N)
+// TC : O(2^n * k)
+// SC : O(k*x)
