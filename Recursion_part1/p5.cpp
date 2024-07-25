@@ -1,34 +1,30 @@
 class Solution {
 private:
-    void solve(int idx, vector<int> temp, set<vector<int>> &st, vector<int> nums, int n){
-        // base case
-        if(idx==n){
-            sort(temp.begin(),temp.end());
-            st.insert(temp);
-            return;
+    void solve(int idx, vector<int> &temp, vector<vector<int>> &ans, vector<int> nums, int n){
+        ans.push_back(temp);
+
+        for(int i=idx; i<n; i++){
+            // avoid duplicate at same level
+            if(i>idx && nums[i-1]==nums[i]) continue;
+            
+            // include
+            temp.push_back(nums[i]);
+            solve(i+1,temp,ans,nums,n);
+            temp.pop_back();
         }
-
-        // exclude
-        solve(idx+1,temp,st,nums,n);
-
-        // include
-        temp.push_back(nums[idx]);
-        solve(idx+1,temp,st,nums,n);
     }
 public:
     vector<vector<int>> subsetsWithDup(vector<int>& nums) {
-        // BRUTE FORCE - POWER SET approach
-        // using set for uniqueness
+        // OPTIMAL - avoid picking duplicate at same level
+        sort(nums.begin(),nums.end());
         int n = nums.size();
-        set<vector<int>> st;
+        vector<vector<int>> ans;
         vector<int> temp;
-        solve(0,temp,st,nums,n);
-
-        vector<vector<int>> ans(st.begin(),st.end());
+        solve(0,temp,ans,nums,n);
 
         return ans;
     }
 };
 
-// TC : O(2^n*k)
-// SC : O(k*x) + (x)
+// TC : O(2^n * n)
+// SC : O(2^n * k)
